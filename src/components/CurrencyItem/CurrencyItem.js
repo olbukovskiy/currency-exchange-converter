@@ -13,9 +13,7 @@ const CurrencyItem = ({
       <Grid item xs={8}>
         <TextField
           fullWidth
-          inputProps={{
-            type: "number",
-          }}
+          type="number"
           label={label}
           value={amount}
           onChange={onAmountChange}
