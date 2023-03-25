@@ -18,7 +18,7 @@ const Converter = ({ currencies, baseCurrency }) => {
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
 
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
 
   const [exchangeCurrencyRate, setExchangeCurrencyRate] = useState(0);
   const [isFromCurrency, setIsFromCurrency] = useState(true);

@@ -16,5 +16,4 @@ export const Backdrop = styled.div`
 export const LoaderBox = styled.div`
   position: relative;
   margin: 0 auto;
-  overflow-y: auto;
 `;
