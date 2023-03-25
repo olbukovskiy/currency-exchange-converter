@@ -5,6 +5,7 @@ import { IconButton, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 
 import CurrencyItem from "../CurrencyItem/CurrencyItem";
+import { Loader } from "../Loader/Loader";
 import { roundToTwoDecimals } from "../../helpers";
 import { VARS } from "../../vars";
 
@@ -95,6 +96,7 @@ const Converter = ({ currencies, baseCurrency }) => {
   return (
     <Container maxWidth="md">
       <ConverterThumb>
+        {(!fromCurrency || !toCurrency) && <Loader />}
         {fromCurrency && toCurrency && (
           <ConverterBox>
             <Typography
