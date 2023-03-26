@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Container, Typography } from "@mui/material";
 import CurrenciesList from "../CurrenciesList/CurrenciesList";
 import { ConverterLogo, HeaderComp } from "./Header.styled";
@@ -39,6 +40,13 @@ const Header = ({ exchanges }) => {
       </Container>
     </HeaderComp>
   );
+};
+
+Header.propTypes = {
+  exchanges: PropTypes.shape({
+    usdExchangeRate: PropTypes.number.isRequired,
+    euroExchangeRate: PropTypes.number.isRequired,
+  }),
 };
 
 export default Header;

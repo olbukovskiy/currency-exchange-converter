@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import PropTypes, { number } from "prop-types";
 
 import { SwapVertOutlined } from "@mui/icons-material";
 import { IconButton, Typography } from "@mui/material";
 import { Container } from "@mui/system";
+import { toast } from "react-toastify";
 
 import CurrencyItem from "../CurrencyItem/CurrencyItem";
-import { Loader } from "../Loader/Loader";
 import { roundToTwoDecimals } from "../../helpers";
 import { VARS } from "../../vars";
 
@@ -17,6 +18,7 @@ const Converter = ({ currencies, baseCurrency }) => {
   const [currenciesKeys, setCurrenciesKeys] = useState([]);
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
+  const [err, setErr] = useState(null);
 
   const [amount, setAmount] = useState(1);
 
@@ -60,11 +62,20 @@ const Converter = ({ currencies, baseCurrency }) => {
         .then((response) => response.json())
         .then((data) => {
           setExchangeCurrencyRate(data.conversion_rate);
-        });
+        })
+        .catch((error) => setErr(error.message));
     };
 
     getExchangeCurrencyRate();
   }, [fromCurrency, toCurrency]);
+
+  useEffect(() => {
+    if (!err) return;
+
+    toast.error(err, {
+      autoClose: 3000,
+    });
+  }, [err]);
 
   const fromCurrencyChangeHandler = (event) => {
     setFromCurrency(event.target.value);
@@ -94,59 +105,65 @@ const Converter = ({ currencies, baseCurrency }) => {
   };
 
   return (
-    <Container maxWidth="md">
-      <ConverterThumb>
-        {(!fromCurrency || !toCurrency) && <Loader />}
-        {fromCurrency && toCurrency && (
-          <ConverterBox>
-            <Typography
-              variant="h5"
-              component="h2"
-              style={{
-                position: "absolute",
-                top: -18,
-                overflow: "hidden",
-                zIndex: 1000,
-                backgroundColor: "#eee",
-                paddingLeft: 16,
-                paddingRight: 16,
-              }}
-            >
-              Currency converter
-            </Typography>
-            <CurrencyItem
-              label={fromLabel}
-              currencies={currenciesKeys}
-              currency={fromCurrency}
-              amount={fromAmount}
-              onChange={fromCurrencyChangeHandler}
-              onAmountChange={fromAmountChangeHandler}
-            />
-            <IconButton
-              color="info"
-              style={{
-                alignSelf: "flex-end",
-                marginRight: 96,
-              }}
-              aria-label="swap"
-              size="large"
-              onClick={toggleCurrencyHandler}
-            >
-              <SwapVertOutlined style={{ width: 30, height: 30 }} />
-            </IconButton>
-            <CurrencyItem
-              label={toLabel}
-              currencies={currenciesKeys}
-              currency={toCurrency}
-              amount={toAmount}
-              onChange={toCurrencyChangeHandler}
-              onAmountChange={toAmountChangeHandler}
-            />
-          </ConverterBox>
-        )}
-      </ConverterThumb>
-    </Container>
+    <section>
+      <Container maxWidth="md">
+        <ConverterThumb>
+          {fromCurrency && toCurrency && (
+            <ConverterBox>
+              <Typography
+                variant="h5"
+                component="h2"
+                style={{
+                  position: "absolute",
+                  top: -18,
+                  overflow: "hidden",
+                  zIndex: 1000,
+                  backgroundColor: "#eee",
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                }}
+              >
+                Currency converter
+              </Typography>
+              <CurrencyItem
+                label={fromLabel}
+                currencies={currenciesKeys}
+                currency={fromCurrency}
+                amount={fromAmount}
+                onChange={fromCurrencyChangeHandler}
+                onAmountChange={fromAmountChangeHandler}
+              />
+              <IconButton
+                color="info"
+                style={{
+                  alignSelf: "flex-end",
+                  marginRight: 96,
+                }}
+                aria-label="swap"
+                size="large"
+                onClick={toggleCurrencyHandler}
+              >
+                <SwapVertOutlined style={{ width: 30, height: 30 }} />
+              </IconButton>
+              <CurrencyItem
+                label={toLabel}
+                currencies={currenciesKeys}
+                currency={toCurrency}
+                amount={toAmount}
+                onChange={toCurrencyChangeHandler}
+                onAmountChange={toAmountChangeHandler}
+              />
+            </ConverterBox>
+          )}
+        </ConverterThumb>
+      </Container>
+    </section>
   );
+};
+
+Converter.propTypes = {
+  currencies: PropTypes.objectOf(number),
+  baseCurrency: PropTypes.string.isRequired,
 };
 
 export default Converter;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
 
@@ -9,6 +10,11 @@ const CurrenciesListItem = ({ currency, currencyValue }) => {
       </Typography>
     </Grid>
   );
+};
+
+CurrenciesListItem.propTypes = {
+  currency: PropTypes.string,
+  currencyValue: PropTypes.number,
 };
 
 export default React.memo(CurrenciesListItem);
