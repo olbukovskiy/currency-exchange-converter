@@ -1,6 +1,16 @@
 import { Grid, MenuItem, Select, TextField } from "@mui/material";
+import { CustomSelectChangeEventType } from "../../types";
 
-const CurrencyItem = ({
+type Props = {
+  currencies: string[];
+  currency: string;
+  amount: number;
+  label: string;
+  onChange: (event: CustomSelectChangeEventType) => void;
+  onAmountChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const CurrencyItem: React.FunctionComponent<Props> = ({
   currencies,
   currency,
   amount,

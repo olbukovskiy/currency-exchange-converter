@@ -1,9 +1,15 @@
-import PropTypes from "prop-types";
 import { Container, Typography } from "@mui/material";
 import CurrenciesList from "../CurrenciesList/CurrenciesList";
 import { ConverterLogo, HeaderComp } from "./Header.styled";
 
-const Header = ({ exchanges }) => {
+type Props = {
+  exchanges: {
+    usdExchangeRate: number;
+    euroExchangeRate: number;
+  };
+};
+
+const Header: React.FunctionComponent<Props> = ({ exchanges }) => {
   return (
     <HeaderComp>
       <Container
@@ -40,13 +46,6 @@ const Header = ({ exchanges }) => {
       </Container>
     </HeaderComp>
   );
-};
-
-Header.propTypes = {
-  exchanges: PropTypes.shape({
-    usdExchangeRate: PropTypes.number.isRequired,
-    euroExchangeRate: PropTypes.number.isRequired,
-  }),
 };
 
 export default Header;

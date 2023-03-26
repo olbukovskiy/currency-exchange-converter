@@ -1,7 +1,7 @@
 import { RotatingLines } from "react-loader-spinner";
 import { Backdrop, LoaderBox } from "./Loader.styled";
 
-export const Loader = () => {
+export const Loader: React.FunctionComponent = () => {
   return (
     <Backdrop>
       <LoaderBox>

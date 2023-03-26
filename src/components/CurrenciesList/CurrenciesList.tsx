@@ -1,9 +1,12 @@
-import PropTypes from "prop-types";
 import { Grid } from "@mui/material";
 import CurrenciesListItem from "../CurrenciesListItem/CurrenciesListItem";
 import { CurrenciesBox } from "./CurrenciesList.styled";
 
-const CurrenciesList = (props) => {
+type Props = {
+  [prop: string]: number;
+};
+
+const CurrenciesList: React.FunctionComponent<Props> = (props) => {
   const propsArray = Object.keys(props);
   const namesOfCurrencies = ["USD", "EURO"];
   return (
@@ -21,13 +24,6 @@ const CurrenciesList = (props) => {
       </Grid>
     </CurrenciesBox>
   );
-};
-
-CurrenciesList.propTypes = {
-  props: PropTypes.shape({
-    usdExchangeRate: PropTypes.number.isRequired,
-    euroExchangeRate: PropTypes.number.isRequired,
-  }),
 };
 
 export default CurrenciesList;

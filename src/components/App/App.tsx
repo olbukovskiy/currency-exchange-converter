@@ -3,19 +3,20 @@ import { ToastContainer, toast } from "react-toastify";
 
 import Header from "../Header/Header";
 import Converter from "../Converter/Converter";
+import { Loader } from "../Loader/Loader";
+import { CurrenciesObj, ErrorWithMessage } from "../../types";
 import { VARS } from "../../vars";
 import { currenciesRateCalc } from "../../helpers";
 
 import { AppContainer } from "./App.styled";
 import "react-toastify/dist/ReactToastify.css";
-import { Loader } from "../Loader/Loader";
 
 const { BASE_URL, KEY } = VARS;
 
-const App = () => {
-  const [currencies, setCurrencies] = useState({});
+const App: React.FunctionComponent = () => {
+  const [currencies, setCurrencies] = useState<CurrenciesObj>({});
   const [baseCurrency, setBaseCurrency] = useState("");
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const [usdExchangeRate, setUsdExchangeRate] = useState(0);
@@ -36,7 +37,7 @@ const App = () => {
           setUsdExchangeRate(usdRate);
           setEuroExchangeRate(euroRate);
         })
-        .catch((error) => {
+        .catch((error: ErrorWithMessage) => {
           setErr(error.message);
         })
         .finally(() => setIsLoading(false));

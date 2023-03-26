@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PropTypes, { number } from "prop-types";
 
 import { SwapVertOutlined } from "@mui/icons-material";
 import { IconButton, Typography } from "@mui/material";
@@ -8,17 +7,30 @@ import { toast } from "react-toastify";
 
 import CurrencyItem from "../CurrencyItem/CurrencyItem";
 import { roundToTwoDecimals } from "../../helpers";
+import {
+  CustomSelectChangeEventType,
+  ErrorWithMessage,
+  CurrenciesObj,
+} from "../../types";
 import { VARS } from "../../vars";
 
 import { ConverterBox, ConverterThumb } from "./Converter.styled";
 
 const { BASE_URL, KEY } = VARS;
 
-const Converter = ({ currencies, baseCurrency }) => {
-  const [currenciesKeys, setCurrenciesKeys] = useState([]);
+type Props = {
+  currencies: CurrenciesObj;
+  baseCurrency: string;
+};
+
+const Converter: React.FunctionComponent<Props> = ({
+  currencies,
+  baseCurrency,
+}) => {
+  const [currenciesKeys, setCurrenciesKeys] = useState<string[]>([]);
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState<null | string>(null);
 
   const [amount, setAmount] = useState(1);
 
@@ -63,7 +75,7 @@ const Converter = ({ currencies, baseCurrency }) => {
         .then((data) => {
           setExchangeCurrencyRate(data.conversion_rate);
         })
-        .catch((error) => setErr(error.message));
+        .catch((error: ErrorWithMessage) => setErr(error.message));
     };
 
     getExchangeCurrencyRate();
@@ -77,21 +89,25 @@ const Converter = ({ currencies, baseCurrency }) => {
     });
   }, [err]);
 
-  const fromCurrencyChangeHandler = (event) => {
+  const fromCurrencyChangeHandler = (event: CustomSelectChangeEventType) => {
     setFromCurrency(event.target.value);
   };
 
-  const toCurrencyChangeHandler = (event) => {
+  const toCurrencyChangeHandler = (event: CustomSelectChangeEventType) => {
     setToCurrency(event.target.value);
   };
 
-  const fromAmountChangeHandler = (event) => {
-    setAmount(event.target.value);
+  const fromAmountChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAmount(Number(event.target.value));
     setIsFromCurrency(true);
   };
 
-  const toAmountChangeHandler = (event) => {
-    setAmount(event.target.value);
+  const toAmountChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAmount(Number(event.target.value));
     setIsFromCurrency(false);
   };
 
@@ -159,11 +175,6 @@ const Converter = ({ currencies, baseCurrency }) => {
       </Container>
     </section>
   );
-};
-
-Converter.propTypes = {
-  currencies: PropTypes.objectOf(number),
-  baseCurrency: PropTypes.string.isRequired,
 };
 
 export default Converter;
